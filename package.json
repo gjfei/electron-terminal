@@ -1,0 +1,34 @@
+{
+  "name": "electron-terminal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/electron-core/index.js",
+  "scripts": {
+    "dev": "sucrase-node scripts/dev.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-terminal/electron-core": "workspace:*",
+    "@electron-terminal/electron-preload": "workspace:*",
+    "@electron-terminal/web-core": "workspace:*",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.5"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "electron": "^18.0.4",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.6.0",
+    "lodash-es": "^4.17.21",
+    "prettier": "^2.6.2",
+    "sucrase": "^3.21.0",
+    "vue-eslint-parser": "^8.3.0"
+  }
+}

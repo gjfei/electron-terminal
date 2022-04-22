@@ -1,0 +1,25 @@
+{
+  "name": "@electron-terminal/web-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@electron-terminal/electron-core": "workspace:^1.0.0",
+    "element-plus": "^2.1.9",
+    "normalize.css": "^8.0.1",
+    "pinia": "^2.0.13",
+    "sass": "^1.50.0",
+    "sass-loader": "^12.6.0",
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.1"
+  }
+}
