@@ -33,7 +33,7 @@ module.exports = {
       rules: {
         'no-undef': 'off',
       },
-    }
+    },
   ],
   rules: {
     semi: ['error', 'always'],

@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { app, BrowserWindow } from 'electron';
 let win: BrowserWindow | null = null;
-
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
