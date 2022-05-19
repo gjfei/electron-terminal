@@ -1,14 +1,9 @@
 <template>
-  <div v-html="result"></div>
+  <TerminalCore />
 </template>
 
 <script setup>
-import chalk from 'chalk';
-import compiler from '@/asni-compiler-core';
-
-const result = compiler(
-  `${chalk.bgRed.blue('Hello, world!')}/${chalk.bgRed.blue('Hello, world!')}`
-);
+import TerminalCore from '@/terminal-core/index.vue';
 </script>
 
 <style scoped lang="scss"></style>

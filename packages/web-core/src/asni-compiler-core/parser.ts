@@ -44,16 +44,18 @@ const parser = (tokens: { value: string; type: string }[]) => {
           styles.length = 0;
           break;
         }
-        if (openReg.test(ansiCode)) {
+        const openMatch = ansiCode.match(openReg);
+        if (openMatch) {
           styles.push({
             type,
-            ansiCode,
+            ansiCode: openMatch[0],
           });
           break;
         }
-
         if (closeReg.test(ansiCode)) {
-          styles = styles.filter((item) => !openReg.test(item.ansiCode));
+          styles = styles.filter(
+            (item) => !openReg.test(item.ansiCode) && item.type === type
+          );
           break;
         }
       }
