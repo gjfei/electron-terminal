@@ -3,7 +3,9 @@ node_modules
 dist
 dist-ssr
 *.local
+packages/native-core/build/**/*
 
 # local env files
 .history
 .idea
+*.js.map

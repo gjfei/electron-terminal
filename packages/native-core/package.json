@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node-gyp build"
+    "build": "node-gyp build",
+    "postinstall": "node-gyp configure && pnpm run build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-addon-api": "^5.0.0",
+    "node-addon-api": "^5.0.0"
+  },
+  "devDependencies": {
     "node-gyp": "^9.0.0"
   }
 }

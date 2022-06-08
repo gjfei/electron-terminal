@@ -13,6 +13,17 @@ const startWebCore = async () => {
   return server;
 };
 
+const startNativeCore = async () => {
+  const server = build({
+    configFile: 'packages/native-core/vite.config.ts',
+    mode: 'development',
+    build: {
+      watch: {},
+    },
+  });
+  return server;
+};
+
 const startElectronCore = async () => {
   let electronProcess: ChildProcessWithoutNullStreams | null = null;
 
@@ -40,12 +51,6 @@ const startElectronPreload = async () => {
   const server = build({
     configFile: 'packages/electron-preload/vite.config.ts',
     mode: 'development',
-    plugins: [
-      {
-        name: 'electron-preload-watcher',
-        writeBundle() {},
-      },
-    ],
     build: {
       watch: {},
     },
@@ -55,6 +60,7 @@ const startElectronPreload = async () => {
 
 const start = async () => {
   await startWebCore();
+  await startNativeCore();
   await startElectronPreload();
   await startElectronCore();
 };
