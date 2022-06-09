@@ -6,16 +6,16 @@ export default () => {
     root: __dirname,
     build: {
       sourcemap: true,
-      outDir: './',
-      emptyOutDir: false,
+      outDir: './dist',
+      emptyOutDir: true,
       lib: {
-        entry: 'index.ts',
+        entry: 'src/index.ts',
         formats: ['cjs'],
         fileName: () => `[name].js`,
       },
       rollupOptions: {
         //  排除electorn 和 node
-        external: ['electron', ...builtinModules],
+        external: ['electron', 'node-pty', ...builtinModules],
       },
     },
   });

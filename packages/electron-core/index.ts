@@ -1,10 +1,10 @@
 import { join } from 'path';
-import { exec } from 'child_process';
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { getRegistryValue, HK } from '@electron-terminal/native-core';
-import type { ChildProcess } from 'child_process';
+import { createPowerShellCore } from '@electron-terminal/native-core';
+import type { IPty } from '@electron-terminal/native-core';
 
-let win: BrowserWindow | null = null;
+let win: BrowserWindow;
+
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
@@ -26,34 +26,26 @@ async function createWindow() {
 
 app.whenReady().then(createWindow);
 
-let terminalProcess: ChildProcess;
+let terminalProcess: IPty | null;
 
 ipcMain.on('init-terminal', () => {
   if (terminalProcess) {
     return;
   }
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const native = require('@electron-terminal/native-core');
-  const command = native.getRegistryValue(
-    native.HK.LM,
-    'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\pwsh.exe',
-    ''
-  );
-  console.log(command);
-  // terminalProcess = exec('"C:\\Program Files\\PowerShell\\7\\pwsh.exe"');
-  // terminalProcess.stdout.on('data', (data) => {
-  //   win.webContents.send('terminal-output', data);
-  // });
-  // terminalProcess.stderr.on('data', (data) => {
-  //   // console.error(`stderr: ${data}`);
-  // });
-  // terminalProcess.on('close', (code) => {
-  //   // console.log(`child process exited with code ${code}`);
-  // });
-  // terminalProcess.stdin.write('ls');
-  // terminalProcess.stdin.write('\n');
+
+  terminalProcess = createPowerShellCore([], {
+    env: process.env as Record<string, string>,
+    cols: 80,
+    rows: 24,
+  });
+
+  if (terminalProcess) {
+    terminalProcess.onData((event) => {
+      win.webContents.send('terminal-output', event);
+    });
+  }
 });
 
-// ipcMain.on('terminal-write', (event, command) => {
-//   terminalProcess.stdin.write(command);
-// });
+ipcMain.on('terminal-write', (event, command) => {
+  terminalProcess?.write(command);
+});

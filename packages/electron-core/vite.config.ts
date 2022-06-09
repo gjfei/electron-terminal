@@ -15,7 +15,12 @@ export default () => {
       },
       rollupOptions: {
         //  排除electorn 和 node
-        external: ['electron', ...builtinModules],
+        external: [
+          'electron',
+          '@electron-terminal/native-core',
+          'node-pty',
+          ...builtinModules,
+        ],
       },
     },
   });

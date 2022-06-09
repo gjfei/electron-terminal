@@ -1,3 +1,12 @@
+let native: Native;
+
+const getNative = () => {
+  if (!native) {
+    native = require('../build/Release/native.node');
+  }
+  return native;
+};
+
 export enum REG {
   SZ = 1,
   EXPAND_SZ = 2,
@@ -25,17 +34,9 @@ export interface RegistryValue {
   value: any;
 }
 
-type Native = {
+export type Native = {
   getKey: (root: HK, path: string) => RegistryValue[];
 };
-
-let native: Native;
-function getNative() {
-  if (!native) {
-    native = require('./build/Release/native.node');
-  }
-  return native;
-}
 
 export const getRegistryKey = (root: HK, path: string) => {
   const key = getNative().getKey(root, path);
@@ -49,7 +50,11 @@ export const getRegistryKey = (root: HK, path: string) => {
   return ret;
 };
 
-export const getRegistryValue = (root: HK, path: string, name: string) => {
+export const getRegistryValue = (
+  root: HK,
+  path: string,
+  name: string
+): string | null => {
   const key = getRegistryKey(root, path);
   if (!key || !key[name]) {
     return null;
