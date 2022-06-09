@@ -1,30 +1,40 @@
 #!/usr/bin/env node
 import path from 'path';
-import rebuild from 'electron-rebuild';
+import { readFileSync } from 'fs';
+import _rebuild from 'electron-rebuild';
 
-process.env.ARCH =
-  (process.env.ARCH || process.arch) === 'arm' ? 'armv7l' : process.arch;
+const electronPkg = JSON.parse(
+  readFileSync(
+    path.resolve(__dirname, '../node_modules/electron/package.json'),
+    'utf8'
+  )
+);
 
-const lifecycles = [];
-for (const dir of ['../node_modules/node-pty']) {
-  const build = rebuild({
-    buildPath: path.resolve(__dirname, dir),
-    electronVersion: '19.0.4',
-    arch: process.env.ARCH,
-    force: true,
-    debug: true,
+const nativeDir = ['../packages/native-core', '../node_modules/node-pty'];
+
+const rebuild = (dir) => {
+  return new Promise((resolve, reject) => {
+    const build = _rebuild({
+      buildPath: path.resolve(__dirname, dir),
+      electronVersion: electronPkg.version,
+      force: true,
+    });
+    build.then(resolve);
+    build.catch((error) => {
+      reject(error);
+      process.exit(1);
+    });
+    build.lifecycle;
+    build.lifecycle.on('module-found', (name) => {
+      console.info('Rebuilding', `${dir}/${name}`);
+    });
   });
-  build.catch((e) => {
-    console.error(e);
-    process.exit(1);
-  });
-  lifecycles.push([build.lifecycle, dir]);
-}
+};
 
-console.info('Building against Electron', '19.0.4');
+const start = async () => {
+  for (const dir of nativeDir) {
+    await rebuild(dir);
+  }
+};
 
-for (const [lc, dir] of lifecycles) {
-  lc.on('module-found', (name) => {
-    console.info('Rebuilding', `${dir}/${name}`);
-  });
-}
+start();

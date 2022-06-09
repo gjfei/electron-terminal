@@ -5,6 +5,7 @@ dist-ssr
 *.local
 packages/native-core/build/**/*
 packages/native-core/index.js
+packages/native-core/bin
 
 # local env files
 .history

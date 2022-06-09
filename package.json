@@ -5,7 +5,8 @@
   "main": "dist/electron-core/index.js",
   "scripts": {
     "build:native": "sucrase-node scripts/build-native.ts",
-    "dev": "sucrase-node scripts/dev.ts"
+    "dev": "sucrase-node scripts/dev.ts",
+    "postinstall": "pnpm run build:native"
   },
   "author": "",
   "license": "ISC",

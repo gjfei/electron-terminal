@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "build": "node-gyp build",
-    "postinstall": "node-gyp configure && pnpm run build && node-gyp rebuild"
+    "build": "node-gyp build"
   },
   "author": "",
   "license": "ISC",
