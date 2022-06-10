@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     root: __dirname,
     build: {
       sourcemap: isDev,
-      outDir: '../../dist/electron-preload',
+      // outDir: '../../dist/electron-preload',
       emptyOutDir: true,
       lib: {
         entry: 'index.ts',

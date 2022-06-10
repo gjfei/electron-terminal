@@ -9,14 +9,14 @@ async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
     webPreferences: {
-      preload: join(__dirname, '../electron-preload/index.js'),
+      preload: join(__dirname, '../../electron-preload/dist/index.js'),
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
   // 是否打包， 区分开发和生产
   if (app.isPackaged) {
-    win.loadFile(join(__dirname, '../web-core/index.html'));
+    win.loadFile(join(__dirname, '../../web-core/dist/index.html'));
   } else {
     const url = `http://127.0.0.1:3000`;
     win.loadURL(url);

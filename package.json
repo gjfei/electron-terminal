@@ -1,40 +1,39 @@
 {
   "name": "electron-terminal",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/electron-core/index.js",
+  "license": "MIT",
+  "private": true,
+  "main": "packages/electron-core/dist/index.js",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "sucrase-node scripts/dev.ts",
     "build:window": "sucrase-node scripts/build-window.ts",
     "build:native": "sucrase-node scripts/build-native.ts",
     "postinstall": "pnpm run build:native"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
-    "@typescript-eslint/eslint-plugin": "^5.19.0",
-    "@typescript-eslint/parser": "^5.19.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
     "chalk": "^5.0.1",
     "electron": "^19.0.4",
     "electron-builder": "^23.0.3",
     "electron-rebuild": "^3.2.7",
-    "eslint": "^8.13.0",
+    "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.6.0",
+    "eslint-plugin-vue": "^9.1.0",
     "prettier": "^2.6.2",
     "sucrase": "^3.21.0",
-    "typescript": "^4.6.3",
-    "vite": "^2.9.5",
-    "vue-eslint-parser": "^8.3.0"
+    "typescript": "^4.7.3",
+    "vite": "^2.9.10",
+    "vue-eslint-parser": "^9.0.2"
   },
   "dependencies": {
-    "@electron-terminal/electron-core": "workspace:*",
-    "@electron-terminal/electron-preload": "workspace:*",
-    "@electron-terminal/native-core": "workspace:*",
-    "@electron-terminal/web-core": "workspace:*",
+    "@electron-terminal/native-core": "*",
     "lodash-es": "^4.17.21",
     "node-pty": "^0.10.1"
   }

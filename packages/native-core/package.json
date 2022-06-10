@@ -1,18 +1,11 @@
 {
   "name": "@electron-terminal/native-core",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/index.js",
   "types": "src/index.ts",
-  "scripts": {
-    "build": "node-gyp build"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "node-addon-api": "^5.0.0"
-  },
+  "license": "MIT",
   "devDependencies": {
+    "node-addon-api": "^5.0.0",
     "node-gyp": "^9.0.0"
   }
 }

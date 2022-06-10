@@ -26,7 +26,7 @@ const build = async () => {
 
     await electronBuild({
       dir: false,
-      // win: ['zip'],
+      win: ['zip'],
       arm64: process.arch === 'arm64',
       config: {
         extraMetadata: {

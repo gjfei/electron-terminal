@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     root: __dirname,
     build: {
       sourcemap: isDev,
-      outDir: '../../dist/electron-core',
+      // outDir: '../../dist/electron-core',
       emptyOutDir: true,
       lib: {
         entry: 'index.ts',
@@ -19,7 +19,6 @@ export default defineConfig(({ mode }) => {
         external: [
           'electron',
           '@electron-terminal/native-core',
-          'node-pty',
           ...builtinModules,
         ],
       },

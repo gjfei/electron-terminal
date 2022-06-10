@@ -6,6 +6,7 @@ import { viteExternalsPlugin } from 'vite-plugin-externals';
 export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   return {
+    base: './',
     root: __dirname,
     build: {
       sourcemap: isDev,

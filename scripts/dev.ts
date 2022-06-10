@@ -38,7 +38,9 @@ const startElectronCore = async () => {
         name: 'electron-core-watcher',
         writeBundle() {
           electronProcess && electronProcess.kill();
-          electronProcess = spawn(electron, ['.'], { stdio: 'inherit' });
+          electronProcess = spawn(electron as unknown as string, ['.'], {
+            stdio: 'inherit',
+          });
         },
       },
     ],
