@@ -1,11 +1,12 @@
 import { builtinModules } from 'module';
 import { defineConfig } from 'vite';
 
-export default () => {
-  return defineConfig({
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development';
+  return {
     root: __dirname,
     build: {
-      sourcemap: true,
+      sourcemap: isDev,
       outDir: './dist',
       emptyOutDir: true,
       lib: {
@@ -18,5 +19,5 @@ export default () => {
         external: ['electron', 'node-pty', ...builtinModules],
       },
     },
-  });
-};
+  };
+});

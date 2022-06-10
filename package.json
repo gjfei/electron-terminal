@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/electron-core/index.js",
   "scripts": {
-    "build:native": "sucrase-node scripts/build-native.ts",
     "dev": "sucrase-node scripts/dev.ts",
+    "build:window": "sucrase-node scripts/build-window.ts",
+    "build:native": "sucrase-node scripts/build-native.ts",
     "postinstall": "pnpm run build:native"
   },
   "author": "",
@@ -17,6 +18,7 @@
     "chalk": "^5.0.1",
     "electron": "^19.0.4",
     "electron-builder": "^23.0.3",
+    "electron-rebuild": "^3.2.7",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
@@ -33,7 +35,6 @@
     "@electron-terminal/electron-preload": "workspace:*",
     "@electron-terminal/native-core": "workspace:*",
     "@electron-terminal/web-core": "workspace:*",
-    "electron-rebuild": "^3.2.7",
     "lodash-es": "^4.17.21",
     "node-pty": "^0.10.1"
   }

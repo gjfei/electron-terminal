@@ -2,8 +2,9 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { viteExternalsPlugin } from 'vite-plugin-externals';
-export default defineConfig(({ command }) => {
-  const isDev = command === 'serve';
+
+export default defineConfig(({ mode }) => {
+  const isDev = mode === 'development';
   return {
     root: __dirname,
     build: {
