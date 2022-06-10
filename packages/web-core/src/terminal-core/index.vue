@@ -4,19 +4,27 @@
   <el-button type="primary" @click="init">init</el-button>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script lang="ts" setup>
+import { ref, onUnmounted } from 'vue';
 import { ipcRenderer } from 'electron';
-import compiler from '@/asni-compiler-core';
+import compiler from '../asni-compiler-core';
 
 const command = ref('');
-const messages = ref([]);
+const messages = ref<string[]>([]);
+
+const onTerminalOutPut = (event, message: string) => {
+  console.log({ message });
+  messages.value.push(compiler(message));
+};
+
+onUnmounted(() => {
+  ipcRenderer.off('terminal-output', onTerminalOutPut);
+  ipcRenderer.send('terminal-kill');
+});
 
 const init = () => {
-  ipcRenderer.on('terminal-output', (event, message) => {
-    console.log({ message });
-    messages.value.push(compiler(message));
-  });
+  ipcRenderer.off('terminal-output', onTerminalOutPut);
+  ipcRenderer.on('terminal-output', onTerminalOutPut);
   ipcRenderer.send('init-terminal');
 };
 

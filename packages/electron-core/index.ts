@@ -29,15 +29,13 @@ app.whenReady().then(createWindow);
 let terminalProcess: IPty | null;
 
 ipcMain.on('init-terminal', () => {
-  if (terminalProcess) {
-    return;
+  if (!terminalProcess) {
+    terminalProcess = createPowerShellCore([], {
+      env: process.env as Record<string, string>,
+      cols: 80,
+      rows: 24,
+    });
   }
-
-  terminalProcess = createPowerShellCore([], {
-    env: process.env as Record<string, string>,
-    cols: 80,
-    rows: 24,
-  });
 
   if (terminalProcess) {
     terminalProcess.onData((event) => {
@@ -48,4 +46,11 @@ ipcMain.on('init-terminal', () => {
 
 ipcMain.on('terminal-write', (event, command) => {
   terminalProcess?.write(command);
+});
+
+ipcMain.on('terminal-kill', () => {
+  if (terminalProcess) {
+    terminalProcess.kill();
+    terminalProcess = null;
+  }
 });
