@@ -10,8 +10,7 @@
   "scripts": {
     "dev": "sucrase-node scripts/dev.ts",
     "build:window": "sucrase-node scripts/build-window.ts",
-    "build:native": "sucrase-node scripts/build-native.ts",
-    "postinstall": "pnpm run build:native"
+    "build:native": "sucrase-node scripts/build-native.ts"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
