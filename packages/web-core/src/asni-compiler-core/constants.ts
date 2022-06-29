@@ -1,29 +1,8 @@
 // https://xtermjs.org/docs/api/vtfeatures/
 // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
-export const TOKEN_TYPE = [
-  ['COLOR', '\\x1B\\[([3][0-7]|[9][0-7])m'],
-  ['CLOSE_COLOR', '\\x1B\\[39m'],
-  [
-    '256_COLOR',
-    '\\x1B\\[(38;5;([0]|[0-9][0-9]|[1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))m',
-  ],
-  ['BG_COLOR', '\\x1B\\[([4][0-7]|[1][0][0-7])m'],
-  [
-    '256_BG_COLOR',
-    '\\x1B\\[(48;5;([0]|[0-9][0-9]|[1][0-9][0-9]|[2][0-4][0-9]|[2][5][0-5]))m',
-  ],
-  ['CLOSE_BG_COLOR', '\\x1B\\[49m'],
-  ['MODIFIER', '\\x1B\\[([0-9]|[5][3])m'],
-  ['CLOSE_MODIFIER', '\\x1B\\[([2][2-5]|[2][7-9]|[5][5])m'],
-  ['CURSOR', '\\x1B((\\[(((\\d;\\d)?(H|f))|(#(A|B|C|D|E|F|G|s|u))))|(M|7|8))'],
-  ['ERASE', '\\x1B\\[((([0-3])?J)|((0-2)?K))'],
-  ['SCREEN_MODES', '\\x1B\\[((=([0-7]|[1][3-9])h)|(\\?(25|47|1049)(l|h)))'],
-  ['OSC', '\\x1B\\](0|1|2|4);'],
-  ['C0', '\\x00|\\x07|\\x08|\\x08|\\x0A|\\x0B|\\x0C|\\x0D|\\x0E|\\x0F'],
-] as const;
 
 // https://en.wikipedia.org/wiki/C0_and_C1_control_codes
-export const CO = {
+export const C0 = {
   NUL: '\x00',
   SOH: '\x01',
   STX: '\x02',
@@ -58,7 +37,7 @@ export const CO = {
   US: '\x1F',
   SP: '\x20',
   DEL: '\x7F',
-};
+} as const;
 
 export const C1 = {
   PAD: '\x80',
@@ -93,4 +72,4 @@ export const C1 = {
   OSC: '\x9D',
   PM: '\x9E',
   APC: '\x9F',
-};
+} as const;

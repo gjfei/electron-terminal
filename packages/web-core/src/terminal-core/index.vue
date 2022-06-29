@@ -1,5 +1,5 @@
 <template>
-  <pre v-for="(message, idx) in messages" :key="idx" v-html="message" />
+  <pre v-html="messages" />
   <el-input v-model="command" @keydown.enter="onWrite" />
   <el-button type="primary" @click="init">init</el-button>
 </template>
@@ -7,14 +7,23 @@
 <script lang="ts" setup>
 import { ref, onUnmounted } from 'vue';
 import { ipcRenderer } from 'electron';
-import compiler from '../asni-compiler-core';
+import { Compiler } from '../asni-compiler-core';
 
+const compiler = new Compiler();
 const command = ref('');
-const messages = ref<string[]>([]);
+const messages = ref<string>();
 
 const onTerminalOutPut = (event, message: string) => {
   console.log({ message });
-  messages.value.push(compiler(message));
+  const codes = compiler.write(message).map((rowItem) => {
+    return `<div style="height:1em;">${rowItem
+      .map((item) => {
+        const { styles = [], value } = item;
+        return `<span style="${styles.join(';')};">${value}</span>`;
+      })
+      .join('')}</div>`;
+  });
+  messages.value = codes.join('');
 };
 
 onUnmounted(() => {
@@ -29,9 +38,15 @@ const init = () => {
 };
 
 const onWrite = () => {
-  ipcRenderer.send('terminal-write', `${command.value} \r\n`);
+  ipcRenderer.send('terminal-write', `${command.value} \r`);
   command.value = '';
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+pre {
+  background-color: #000000;
+  color: #cccccc;
+  margin: 0;
+}
+</style>
