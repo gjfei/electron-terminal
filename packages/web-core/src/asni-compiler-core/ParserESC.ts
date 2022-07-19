@@ -1,4 +1,3 @@
-import { C0 } from './constants';
 import type { Compiler } from './Compiler';
 
 type Handler = (
@@ -15,23 +14,25 @@ export class ParserESC {
 
   private init() {
     this.register('7', () => {
-      return {
-        tokens: [
-          {
-            type: 'SC',
-          },
-        ],
-      };
+      // todo
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'SC',
+      //     },
+      //   ],
+      // };
     });
 
     this.register('8', () => {
-      return {
-        tokens: [
-          {
-            type: 'RC',
-          },
-        ],
-      };
+      // TODO
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'RC',
+      //     },
+      //   ],
+      // };
     });
 
     this.register('#', (input, startIndex) => {
@@ -49,135 +50,57 @@ export class ParserESC {
     });
 
     this.register('D', () => {
-      return {
-        tokens: [
-          {
-            type: 'IND',
-          },
-        ],
-      };
+      this.compiler.setCursor(this.compiler.rowIndex + 1);
     });
 
     this.register('E', () => {
-      return {
-        tokens: [
-          {
-            type: 'NEL',
-          },
-        ],
-      };
+      this.compiler.setCursor(this.compiler.rowIndex + 1, 0);
     });
 
     this.register('H', () => {
-      return {
-        tokens: [
-          {
-            type: 'HTS',
-          },
-        ],
-      };
+      // TODO 	在当前光标位置放置一个制表位。
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'HTS',
+      //     },
+      //   ],
+      // };
     });
 
     this.register('M', () => {
-      return {
-        tokens: [
-          {
-            type: 'IR',
-          },
-        ],
-      };
+      this.compiler.setCursor(this.compiler.rowIndex - 1);
     });
 
     this.register('P', () => {
-      return {
-        tokens: [
-          {
-            type: 'DCS',
-          },
-        ],
-      };
+      // TODO
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'DCS',
+      //     },
+      //   ],
+      // };
     });
 
     this.register('[', (...args) => this.compiler.parserCSI.write(...args));
 
     this.register('\\', () => {
-      return {
-        tokens: [
-          {
-            type: 'ST',
-          },
-        ],
-      };
+      // TODO
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'ST',
+      //     },
+      //   ],
+      // };
     });
 
-    this.register(']', (input, startIndex) => {
-      const current = input[startIndex];
-      if (Number(current) >= 0 || Number(current) <= 4) {
-        if (input[startIndex + 1] === ';') {
-          let type;
+    this.register(']', (...args) => this.compiler.parserOSC.write(...args));
 
-          switch (current) {
-            case '0':
-              return this.parserTitle(input, startIndex + 2);
-            case '1':
-              type = 'SET ICON NAME';
-              break;
-            case '2':
-              type = 'SET FRAME TITLE';
-              break;
-            case '4':
-              type = 'CHANGE COLOR';
-              break;
-          }
+    this.register('^', (...args) => this.compiler.parserPM.write(...args));
 
-          return {
-            tokens: [
-              {
-                type,
-              },
-            ],
-            endIndex: startIndex + 2,
-          };
-        }
-      }
-    });
-
-    this.register('^', () => {
-      return {
-        tokens: [
-          {
-            type: 'PM',
-          },
-        ],
-      };
-    });
-
-    this.register('_', () => {
-      return {
-        tokens: [
-          {
-            type: 'APC',
-          },
-        ],
-      };
-    });
-  }
-
-  private parserTitle(input: string, startIndex: number) {
-    let title = '';
-    while (startIndex < input.length) {
-      const current = input[startIndex];
-      startIndex++;
-      switch (current) {
-        case C0.BEL:
-          this.compiler.setTitle(title);
-          return {
-            endIndex: startIndex,
-          };
-        default:
-          title += current;
-      }
-    }
+    this.register('_', (...args) => this.compiler.parserAPC.write(...args));
   }
 
   private register(code: string, handler: Handler) {

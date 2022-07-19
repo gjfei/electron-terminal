@@ -2,6 +2,8 @@
   <pre v-html="messages" />
   <el-input v-model="command" @keydown.enter="onWrite" />
   <el-button type="primary" @click="init">init</el-button>
+  <hr />
+  <div>{{ title }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -9,9 +11,16 @@ import { ref, onUnmounted } from 'vue';
 import { ipcRenderer } from 'electron';
 import { Compiler } from '../asni-compiler-core';
 
-const compiler = new Compiler();
-const command = ref('');
+const title = ref('');
+
+const command = ref('cd C:/Users/Administrator/Desktop/demo');
 const messages = ref<string>();
+
+const compiler = new Compiler({
+  setTitle: (val) => {
+    title.value = val;
+  },
+});
 
 const onTerminalOutPut = (event, message: string) => {
   console.log({ message });
@@ -31,7 +40,7 @@ onUnmounted(() => {
   ipcRenderer.send('terminal-kill');
 });
 
-const init = () => {
+const init = async () => {
   ipcRenderer.off('terminal-output', onTerminalOutPut);
   ipcRenderer.on('terminal-output', onTerminalOutPut);
   ipcRenderer.send('init-terminal');

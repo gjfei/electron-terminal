@@ -7,8 +7,6 @@ type Handler = (
 ) => { tokens?: any[]; endIndex?: number } | void;
 
 export class ParserCSI {
-  private buffer = [];
-  private styles = [];
   private handlerMap = new Map<string, Handler>();
 
   constructor(private compiler: Compiler) {
@@ -90,6 +88,11 @@ export class ParserCSI {
     });
 
     this.register('C', (input, startIndex, code = '1') => {
+      console.log('register(c', this.compiler.rowIndex);
+      this.compiler.setCursor(
+        this.compiler.rowIndex,
+        this.compiler.cellIndex + Number(code)
+      );
       return {
         tokens: [
           {
@@ -146,7 +149,6 @@ export class ParserCSI {
 
     this.register('H', (input, startIndex, code = '1;1') => {
       const [y, x] = code.split(';');
-      console.log('code', code);
       this.compiler.setCursor(Number(y) - 1, Number(x) - 1);
     });
 
@@ -161,27 +163,12 @@ export class ParserCSI {
       };
     });
 
-    this.register('J', (input, startIndex, code = '0') => {
+    this.register('J', (input, startIndex, code) => {
       this.compiler.eraseInDisplay(code);
-      // return {
-      //   tokens: [
-      //     {
-      //       type: 'ED',
-      //       value: code,
-      //     },
-      //   ],
-      // };
     });
 
-    this.register('K', (input, startIndex, code = '1') => {
-      return {
-        tokens: [
-          {
-            type: 'EL',
-            value: code,
-          },
-        ],
-      };
+    this.register('K', (input, startIndex, code) => {
+      this.compiler.eraseInLine(code);
     });
 
     this.register('L', (input, startIndex, code = '1') => {
@@ -240,14 +227,15 @@ export class ParserCSI {
     });
 
     this.register('X', (input, startIndex, code = '1') => {
-      return {
-        tokens: [
-          {
-            type: 'ECH',
-            value: code,
-          },
-        ],
-      };
+      this.compiler.currentRow.splice(this.compiler.cellIndex, Number(code));
+      // return {
+      //   tokens: [
+      //     {
+      //       type: 'ECH',
+      //       value: code,
+      //     },
+      //   ],
+      // };
     });
 
     this.register('Z', (input, startIndex, code = '1') => {
@@ -458,13 +446,13 @@ export class ParserCSI {
 
     this.register('?', (input, startIndex) => {
       const len = input.length;
-      let code = '';
+      let code: string | undefined;
       while (startIndex < len) {
         const current = input[startIndex];
         startIndex++;
 
         if (/\d/.test(current) || current === ';') {
-          code += current;
+          code = (code || '') + current;
           continue;
         }
 
@@ -473,19 +461,19 @@ export class ParserCSI {
         switch (current) {
           case 'J':
             type = 'DECSED';
-            code = code || '1';
+            this.compiler.eraseInDisplay(code);
             break;
           case 'K':
-            code = code || '1';
             type = 'DECSEL';
+            this.compiler.eraseInLine(code);
             break;
           case 'h':
-            code = code || '1;1';
             type = 'DECSET';
+            this.compiler.setPrivateTermialConfig(code);
             break;
           case 'l':
-            code = code || '1;1';
             type = 'DECRST';
+            this.compiler.setPrivateTermialConfig(code, true);
             break;
           case 'n':
             code = code || '1';
